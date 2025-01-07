@@ -42,3 +42,21 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.AhmedSheref96"
+                artifactId = "EditCard"
+                version = "1.1.4"
+            }
+        }
+        repositories {
+            maven {
+                url = uri("https://jitpack.io")
+            }
+        }
+    }
+}

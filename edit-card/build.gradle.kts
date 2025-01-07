@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.el3asas.edit_card"
+    namespace = "morxander.editcard"
     compileSdk = 35
 
     defaultConfig {

@@ -1,4 +1,4 @@
-package com.el3asas.edit_card
+package morxander.editcard
 
 import android.content.Context
 import android.text.Editable

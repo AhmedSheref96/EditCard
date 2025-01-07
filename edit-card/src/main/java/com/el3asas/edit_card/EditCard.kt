@@ -1,8 +1,6 @@
 package com.el3asas.edit_card
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
@@ -11,7 +9,6 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import java.util.regex.Pattern
-
 
 class EditCard : AppCompatEditText {
     var cardType: String = "UNKNOWN"
@@ -25,9 +22,7 @@ class EditCard : AppCompatEditText {
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     ) {
         addMagic()
     }
@@ -65,14 +60,9 @@ class EditCard : AppCompatEditText {
         // The input filters
         val filter: InputFilter = object : InputFilter {
             override fun filter(
-                source: CharSequence?,
-                start: Int,
-                end: Int,
-                dest: Spanned?,
-                dstart: Int,
-                dend: Int
+                source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int
             ): CharSequence? {
-                for (i in start..<end) {
+                (start..<end).forEach { i ->
                     if (!Pattern.compile("[0-9\\-]*").matcher(source.toString()).matches()) {
                         return ""
                     }
@@ -81,35 +71,49 @@ class EditCard : AppCompatEditText {
             }
         }
         // Setting the filters
-        setFilters(arrayOf<InputFilter>(filter, LengthFilter(19)))
+        filters = arrayOf<InputFilter>(filter, LengthFilter(19))
     }
 
     private fun changeIcon() {
         val s = getText().toString().replace("-", "").trim { it <= ' ' }
-        if (s.startsWith("4") || s.matches(CardPattern.VISA.toRegex())) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.vi, 0)
-            this.cardType = "Visa"
-        } else if (s.matches(CardPattern.MASTERCARD_SHORTER.toRegex()) || s.matches(CardPattern.MASTERCARD_SHORT.toRegex()) || s.matches(
+        when {
+            s.startsWith("4") || s.matches(CardPattern.VISA.toRegex()) -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.vi, 0)
+                this.cardType = "Visa"
+            }
+
+            s.matches(CardPattern.MASTERCARD_SHORTER.toRegex()) || s.matches(CardPattern.MASTERCARD_SHORT.toRegex()) || s.matches(
                 CardPattern.MASTERCARD.toRegex()
             )
-        ) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.mc, 0)
-            this.cardType = "MasterCard"
-        } else if (s.matches(CardPattern.AMERICAN_EXPRESS.toRegex())) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.am, 0)
-            this.cardType = "American_Express"
-        } else if (s.matches(CardPattern.DISCOVER_SHORT.toRegex()) || s.matches(CardPattern.DISCOVER.toRegex())) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ds, 0)
-            this.cardType = "Discover"
-        } else if (s.matches(CardPattern.JCB_SHORT.toRegex()) || s.matches(CardPattern.JCB.toRegex())) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.jcb, 0)
-            this.cardType = "JCB"
-        } else if (s.matches(CardPattern.DINERS_CLUB_SHORT.toRegex()) || s.matches(CardPattern.DINERS_CLUB.toRegex())) {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dc, 0)
-            this.cardType = "Diners_Club"
-        } else {
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.card, 0)
-            this.cardType = "UNKNOWN"
+                -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.mc, 0)
+                this.cardType = "MasterCard"
+            }
+
+            s.matches(CardPattern.AMERICAN_EXPRESS.toRegex()) -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.am, 0)
+                this.cardType = "American_Express"
+            }
+
+            s.matches(CardPattern.DISCOVER_SHORT.toRegex()) || s.matches(CardPattern.DISCOVER.toRegex()) -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ds, 0)
+                this.cardType = "Discover"
+            }
+
+            s.matches(CardPattern.JCB_SHORT.toRegex()) || s.matches(CardPattern.JCB.toRegex()) -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.jcb, 0)
+                this.cardType = "JCB"
+            }
+
+            s.matches(CardPattern.DINERS_CLUB_SHORT.toRegex()) || s.matches(CardPattern.DINERS_CLUB.toRegex()) -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dc, 0)
+                this.cardType = "Diners_Club"
+            }
+
+            else -> {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.card, 0)
+                this.cardType = "UNKNOWN"
+            }
         }
     }
 

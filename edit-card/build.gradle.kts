@@ -50,7 +50,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.AhmedSheref96"
                 artifactId = "EditCard"
-                version = "1.1.4"
+                version = "1.1.5"
             }
         }
         repositories {
